@@ -1,0 +1,12 @@
+language: java
+
+script: mvn clean package docker:build -DskipTests
+
+services:
+  - docker
+
+after_success:
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  - docker tag discoverify-config-server:latest kmetin/discoverify-config-server:latest
+  - docker images
+  - docker push kmetin/discoverify-config-server:latest
